@@ -1,6 +1,9 @@
-import { createEvent, createStore } from 'effector';
+import { ThemesObjectType } from '../types/shared.types';
 
-import { ThemesObjectParamsType, ThemesObjectType, ThemeTypes } from '../types/shared.types';
+export const ConstColors = {
+  toggleButtonOn: '#0f0',
+  toggleButtonOff: '#f00',
+};
 
 export const themesObject: ThemesObjectType = {
   default: {
@@ -28,23 +31,3 @@ export const themesObject: ThemesObjectType = {
     buttonDanger: '#a50a02',
   },
 };
-
-export const $theme = createStore<ThemeTypes>('default');
-export const changeTheme = createEvent<ThemeTypes>();
-
-let currentTheme: ThemeTypes = 'default';
-
-export function getTheme(): ThemesObjectParamsType {
-  console.log(themesObject[$theme.defaultState], $theme.defaultState, '$theme.defaultState');
-  return themesObject[currentTheme];
-}
-
-$theme.on(changeTheme, (_, theme: ThemeTypes) => {
-  console.log(theme, 'theme');
-  return theme;
-});
-
-$theme.watch((x: ThemeTypes, _): void => {
-  currentTheme = x;
-  console.log(x, '$theme');
-});

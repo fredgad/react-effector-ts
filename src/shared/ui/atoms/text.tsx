@@ -1,7 +1,11 @@
+import { useStore } from 'effector-react';
 import React from 'react';
 import styled from 'styled-components';
 
+import { $theme } from '../../../widgets/ui/molecules/switch-theme/model';
 import { breakpoints } from '../../lib/breakpoints';
+import { themesObject } from '../../lib/theme';
+import { ThemeTypes } from '../../types/shared.types';
 
 interface TextProps {
   type?: 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span';
@@ -10,26 +14,29 @@ interface TextProps {
   children?: React.ReactNode;
 }
 
-export const Text: React.FC<TextProps> = ({
-  children,
-  type,
-  className,
-  title,
-  ...props
-}) => (
-  <TextStyled
-    data-type={type}
-    as={type}
-    className={className}
-    title={title}
-    {...props}
-  >
-    {children}
-  </TextStyled>
-);
+export const Text: React.FC<TextProps> = ({ children, type, className, title, ...props }) => {
+  const currentTheme = useStore($theme);
 
-const TextStyled = styled.p<{ 'data-type': TextProps['type'] }>`
-  margin: 0;
+  return (
+    <TextStyled
+      theme={currentTheme}
+      data-type={type}
+      as={type}
+      className={className}
+      title={title}
+      {...props}
+    >
+      {children}
+    </TextStyled>
+  );
+};
+
+const TextStyled = styled('p')<{
+  theme: ThemeTypes;
+  'data-type': TextProps['type'];
+}>((props) => {
+  return `
+  color: ${themesObject[props.theme].text};
   font-family: 'TT Hoves', sans-serif;
   font-style: normal;
   font-weight: normal;
@@ -44,29 +51,30 @@ const TextStyled = styled.p<{ 'data-type': TextProps['type'] }>`
   }
   &[data-type='h1'] {
     font-weight: 700;
-    font-size: 4.5rem;
-    line-height: 1.125em;
+    font-size: 32px;
 
     ${breakpoints.devices.mobile} {
-      font-size: 2.8125rem;
+      font-size: 28px;
     }
   }
+  &[data-type='h2'] {
+    font-weight: 700;
+    font-size: 28px;
+  }
   &[data-type='h3'] {
-    font-size: 2.25rem;
-    line-height: 54px;
+    font-weight: 500;
+    font-size: 24px;
   }
   &[data-type='h4'] {
     font-weight: 500;
-    font-size: 1.875rem;
-    line-height: 42px;
+    font-size: 22px;
   }
   &[data-type='h5'] {
     font-weight: 400;
-    font-size: 24px;
-    line-height: 36px;
+    font-size: 20px;
   }
   &[data-type='h6'] {
-    font-size: 21px;
-    line-height: 30px;
+    font-size: 16px;
   }
 `;
+});

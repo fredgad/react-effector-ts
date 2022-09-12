@@ -1,16 +1,10 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { getTheme } from '../../../lib/theme';
+import { ConstColors } from '../../../lib/theme';
+import { ToggleButtonProps } from '../../../types/shared.types';
 
-const currentTheme = getTheme();
-
-interface ButtonProps {
-  func: (toggle: boolean) => void;
-  disabled?: boolean;
-}
-
-export const ToggleButton = (props: ButtonProps) => {
+export const ToggleButton = (props: ToggleButtonProps) => {
   const [toggle, setToggle] = useState(false);
   const { disabled, func } = props;
 
@@ -19,31 +13,73 @@ export const ToggleButton = (props: ButtonProps) => {
       return;
     }
     setToggle(!toggle);
-    func(toggle);
+    if (func) {
+      func(toggle);
+    }
   };
 
+  const onOrOff = toggle ? 'on' : 'off';
+
   return (
-    <ToggleButtonStyled onClick={() => triggerToggle()}>
-      <span className="toggle__on">on</span>
-      <div className="toggle__box"></div>
+    <ToggleButtonStyled onClick={() => triggerToggle()} data-toggle={onOrOff}>
       <span className="toggle__off">off</span>
+      <span className="toggle__on">on</span>
     </ToggleButtonStyled>
   );
 };
 
-const ToggleButtonStyled = styled.button`
+const ToggleButtonStyled = styled.button<{
+  'data-toggle': string;
+}>(() => {
+  return `
   --size: 42px;
+
+  overflow: hidden;
+
+  .toggle__box {
+    height: 42px;
+    width: 100px;
+    background-color: blue;
+  }
+  .toggle__on {
+    transition: .4s;
+    transform: translateX(0)
+  }
+  .toggle__off {
+    transition: .4s;
+    transform: translateX(0)
+  }
+  &[data-toggle='on'] {
+    --base-color: ${ConstColors.toggleButtonOn};
+    .toggle__off {
+      transform: translateX(-100px)
+    }
+  }
+  &[data-toggle='off'] {
+    --base-color: ${ConstColors.toggleButtonOff};
+    .toggle__on {
+      transform: translateX(100px)
+    }
+  }
+
+
+
+ 
   display: flex;
   align-items: center;
   justify-content: center;
 
   border: 1px solid grey;
-  background-color: ;
+  background-color: var(--base-color);
   color: var(--text-color);
   height: var(--size);
+  height: var(--data-height);
+  width: var(--data-width);
+  max-width: 80px;
   border-radius: 3px;
 
-  font-size: 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
   outline: 0;
   padding: 0 1.125rem;
   transition: 0.25s;
@@ -72,17 +108,4 @@ const ToggleButtonStyled = styled.button`
     border-color: var(--base-color);
   }
 `;
-
-const Themes = css`
-  &[data-theme='primary'] {
-    --base-color: var();
-  }
-
-  &[data-theme='danger'] {
-    --base-color: var());
-  }
-
-  &[data-theme='secondary'] {
-    --base-color: var();
-  }
-`;
+});

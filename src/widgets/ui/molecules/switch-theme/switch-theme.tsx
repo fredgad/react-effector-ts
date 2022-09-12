@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { changeTheme } from '../../../../shared/lib/theme';
 import { ToggleButton } from '../../../../shared/ui/moleculs/toggle-button';
+import { changeTheme } from './model';
 
 export const SwithcThemeButton: React.FC = () => {
   const switchTheme = (toggle: boolean): void => {

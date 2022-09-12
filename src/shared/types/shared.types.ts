@@ -40,3 +40,8 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   // FIXME: MutableRefObject not suit for forwardRef
   ref?: MutableRefObject<HTMLButtonElement>;
 };
+
+export interface ToggleButtonProps {
+  func?: (toggle: boolean) => void;
+  disabled?: boolean;
+}

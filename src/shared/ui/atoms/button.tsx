@@ -1,21 +1,10 @@
 import { useStore } from 'effector-react';
-import React, { MutableRefObject } from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react';
+import styled from 'styled-components';
 
-import { $theme, themesObject as themes } from '../../lib/theme';
-import {
-  ButtonProps,
-  ButtonStyledProps,
-  ThemesObjectType,
-  ThemeTypes,
-} from '../../types/shared.types';
-
-/**
- * Button
- * @see https://ant.design/components/button
- * @see https://woly.sova.dev/woly/atoms/button
- * @see https://material-ui.com/components/buttons
- */
+import { $theme } from '../../../widgets/ui/molecules/switch-theme/model';
+import { themesObject } from '../../lib/theme';
+import { ButtonProps, ButtonStyledProps } from '../../types/shared.types';
 
 // eslint-disable-next-line react/display-name
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -55,17 +44,18 @@ const ButtonStyled = styled('button')<ButtonStyledProps>((props) => {
   return `
     
     &[data-theme='primary'] {
-      --base-color: ${themes[props.theme].buttonPrimary};
+      --base-color: ${themesObject[props.theme].buttonPrimary};
     }
 
     &[data-theme='secondary'] {
-      --base-color: ${themes[props.theme].buttonSecondary};
+      --base-color: ${themesObject[props.theme].buttonSecondary};
     }
     &[data-theme='danger'] {
-      --base-color: ${themes[props.theme].buttonDanger};
+      --base-color: ${themesObject[props.theme].buttonDanger};
     }
 
-    --size: 42px;
+    --data-height: 42px;
+    --data-width: auto;
 
     display: flex;
     align-items: center;
@@ -73,8 +63,10 @@ const ButtonStyled = styled('button')<ButtonStyledProps>((props) => {
 
     background-color: var(--base-color);
     border: 1px solid grey;
-    height: var(--size);
+    height: var(--data-height);
+    width: var(--data-width);
     min-width: 80px;
+    max-width: 300px;
     border-radius: 3px;
 
     font-size: 1rem;
@@ -107,17 +99,3 @@ const ButtonStyled = styled('button')<ButtonStyledProps>((props) => {
     }
   `;
 });
-
-const ButtonText = css`
-  &[data-variant='outlined'] {
-    --text-color: var(--base-color);
-    background: var();
-    border-color: var(--base-color);
-  }
-
-  &[data-variant='text'] {
-    --text-color: var();
-    background: transparent;
-    border-color: transparent;
-  }
-`;

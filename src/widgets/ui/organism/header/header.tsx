@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { SwithcThemeButton } from '../../molecules/switch-theme/switch-theme';
 import './header.scss';
 
 export const Header: React.FC = () => {
@@ -16,6 +17,8 @@ export const Header: React.FC = () => {
           </li>
         </ul>
       </nav>
+
+      <SwithcThemeButton></SwithcThemeButton>
     </header>
   );
 };
